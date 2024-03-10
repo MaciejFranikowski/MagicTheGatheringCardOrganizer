@@ -16,11 +16,11 @@ public class CardBox {
     private String location;
     @Column(name = "color")
     private String color;
-    @OneToMany(mappedBy = "boxId")
+    @OneToMany(mappedBy = "box")
     private List<CollectionCard> collectionCards;
-    @OneToMany(mappedBy = "boxId")
+    @OneToMany(mappedBy = "box")
     private List<DeckCard> deckCards;
-    @OneToMany(mappedBy = "boxId")
+    @OneToMany(mappedBy = "box")
     private List<LoanCard> loanCards;
 
     public int getId() {

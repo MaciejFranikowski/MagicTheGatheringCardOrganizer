@@ -8,7 +8,6 @@ public class LoanCard implements Card{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "box_id")
     @ManyToOne()
     @JoinColumn(name = "box_id")
     private CardBox box;
