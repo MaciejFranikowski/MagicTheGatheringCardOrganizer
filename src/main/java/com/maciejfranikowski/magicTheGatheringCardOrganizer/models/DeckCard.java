@@ -9,18 +9,20 @@ public class DeckCard implements Card{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "box_id")
-    private int boxId;
+    @ManyToOne()
+    @JoinColumn(name = "box_id")
+    private CardBox box;
     @Column(name = "name")
     private String name;
     @Column(name = "deck_name")
     private String deckName;
     public DeckCard(){}
-    public DeckCard(int boxId, String name){
-        this.boxId = boxId;
+    public DeckCard(CardBox box, String name){
+        this.box = box;
         this.name = name;
     }
-    public DeckCard(int boxId, String name, String deckName){
-        this.boxId = boxId;
+    public DeckCard(CardBox box, String name, String deckName){
+        this.box = box;
         this.name = name;
         this.deckName = deckName;
     }
@@ -35,13 +37,13 @@ public class DeckCard implements Card{
     }
 
     @Override
-    public int getBoxId() {
-        return boxId;
+    public CardBox getBox() {
+        return box;
     }
 
     @Override
-    public void setBoxId(int boxId) {
-        this.boxId = boxId;
+    public void setBox(CardBox box) {
+        this.box = box;
     }
 
     @Override

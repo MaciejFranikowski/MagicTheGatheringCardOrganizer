@@ -1,8 +1,8 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer.models;
 
 public interface Card {
-    int getBoxId();
-    void setBoxId(int boxId);
+    CardBox getBox();
+    void setBox(CardBox box);
     String getName();
     void setName(String name);
     int getId();

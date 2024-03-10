@@ -9,7 +9,9 @@ public class LoanCard implements Card{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "box_id")
-    private int boxId;
+    @ManyToOne()
+    @JoinColumn(name = "box_id")
+    private CardBox box;
     @Column(name = "name")
     private String name;
     @Column(name = "owner_firstname")
@@ -17,12 +19,12 @@ public class LoanCard implements Card{
     @Column(name = "owner_lastname")
     private String ownerLastName;
     public LoanCard(){}
-    public LoanCard(int boxId, String name){
-        this.boxId = boxId;
+    public LoanCard(CardBox box, String name){
+        this.box = box;
         this.name = name;
     }
-    public LoanCard(int boxId, String name, String ownerFirstName, String ownerLastName){
-        this.boxId = boxId;
+    public LoanCard(CardBox box, String name, String ownerFirstName, String ownerLastName){
+        this.box = box;
         this.name = name;
         this.ownerFirstName = ownerFirstName;
         this.ownerLastName = ownerLastName;
@@ -38,13 +40,13 @@ public class LoanCard implements Card{
     }
 
     @Override
-    public int getBoxId() {
-        return boxId;
+    public CardBox getBox() {
+        return box;
     }
 
     @Override
-    public void setBoxId(int boxId) {
-        this.boxId = boxId;
+    public void setBox(CardBox box) {
+        this.box = box;
     }
 
     @Override

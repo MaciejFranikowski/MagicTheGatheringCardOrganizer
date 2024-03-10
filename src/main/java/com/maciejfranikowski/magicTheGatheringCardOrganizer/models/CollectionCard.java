@@ -9,18 +9,20 @@ public class CollectionCard implements Card{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "box_id")
-    private int boxId;
+    @ManyToOne()
+    @JoinColumn(name = "box_id")
+    private CardBox box;
     @Column(name = "name")
     private String name;
     @Column(name = "set_name")
     private String setName;
     public CollectionCard(){}
-    public CollectionCard(int boxId, String name){
-        this.boxId = boxId;
+    public CollectionCard(CardBox box, String name){
+        this.box = box;
         this.name = name;
     }
-    public CollectionCard(int boxId, String name, String setName){
-        this.boxId = boxId;
+    public CollectionCard(CardBox box, String name, String setName){
+        this.box = box;
         this.name = name;
         this.setName = setName;
     }
@@ -35,13 +37,13 @@ public class CollectionCard implements Card{
     }
 
     @Override
-    public int getBoxId() {
-        return boxId;
+    public CardBox getBox() {
+        return box;
     }
 
     @Override
-    public void setBoxId(int boxId) {
-        this.boxId = boxId;
+    public void setBox(CardBox box) {
+        this.box = box;
     }
 
     @Override
