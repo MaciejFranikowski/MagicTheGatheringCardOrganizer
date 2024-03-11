@@ -15,4 +15,9 @@ public class BoxAndCardService {
     }
 
     public Iterable<CardBox> getCardBoxes(){return cardBoxDao.findAll();}
+    public void createCardBox(String name, String location, String color){
+        CardBox cardBox = new CardBox(name, location,color);
+        cardBox.setId(0);
+        cardBoxDao.save(cardBox);
+    }
 }
