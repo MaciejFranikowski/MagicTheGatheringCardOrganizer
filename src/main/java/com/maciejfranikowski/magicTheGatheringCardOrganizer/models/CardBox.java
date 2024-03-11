@@ -23,6 +23,15 @@ public class CardBox {
     @OneToMany(mappedBy = "box")
     private List<LoanCard> loanCards;
 
+    public CardBox() {
+    }
+
+    public CardBox(String name, String location, String color) {
+        this.name = name;
+        this.location = location;
+        this.color = color;
+    }
+
     public int getId() {
         return id;
     }
