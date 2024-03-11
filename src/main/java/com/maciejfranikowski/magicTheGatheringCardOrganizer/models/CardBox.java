@@ -78,4 +78,14 @@ public class CardBox {
     public void setLoanCards(List<LoanCard> loanCards) {
         this.loanCards = loanCards;
     }
+
+    @Override
+    public String toString() {
+        return "CardBox{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }
