@@ -27,19 +27,19 @@
     <h1>
         Magic The Gathering card organizer
     </h1>
-    <form class="mb-2">
-        <div class="form-row" th:method="POST" th:action="@{/}" th:object="${box}">
+    <form class="mb-2" method="POST" th:action="@{/}" th:object="${box}">
+        <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="inputName">Name</label>
-                <input class="form-control" id="inputName" placeholder="Name" required>
+                <input class="form-control" name="name" id="inputName" placeholder="Name" required>
             </div>
             <div class="form-group col-md-4">
                 <label for="inputLocation">Location</label>
-                <input class="form-control" id="inputLocation" placeholder="Location" required>
+                <input class="form-control" name="location" id="inputLocation" placeholder="Location" required>
             </div>
             <div class="form-group col-md-4">
                 <label for="inputColor">Color</label>
-                <input class="form-control" id="inputColor" placeholder="Color" required>
+                <input class="form-control" name="color" id="inputColor" placeholder="Color" required>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Create new card box</button>
