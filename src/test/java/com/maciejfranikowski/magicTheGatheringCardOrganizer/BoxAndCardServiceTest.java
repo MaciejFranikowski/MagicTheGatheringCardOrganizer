@@ -78,6 +78,12 @@ public class BoxAndCardServiceTest {
         }
         assertEquals(2, cardBoxes.size(), "There should 2 boxes");
     }
+    @Test
+    public void checkIfCardBoxIsNull(){
+        assertTrue(boxAndCardService.checkIfCardBoxIsNull(2));
+        assertFalse(boxAndCardService.checkIfCardBoxIsNull(1));
+    }
+
 
 
     @Test
