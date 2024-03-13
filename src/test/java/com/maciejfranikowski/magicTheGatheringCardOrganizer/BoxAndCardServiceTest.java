@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
@@ -25,6 +24,13 @@ public class BoxAndCardServiceTest {
     private String createBoxSql;
     @Value("${sql.scripts.delete.box}")
     private String deleteBoxSql;
+    @Value("${sql.scripts.delete.deck_cards}")
+    private String deleteDeckCardsSql;
+    @Value("${sql.scripts.delete.collection_cards}")
+    private String deleteCollectionCardsSql;
+    @Value("${sql.scripts.delete.loan_cards}")
+    private String deleteLoanCardsSql;
+
 
     @Autowired
     private BoxAndCardService boxAndCardService;
@@ -39,6 +45,9 @@ public class BoxAndCardServiceTest {
     }
     @AfterEach
     public void cleanUpDatabase(){
+        jdbcTemplate.execute(deleteDeckCardsSql);
+        jdbcTemplate.execute(deleteLoanCardsSql);
+        jdbcTemplate.execute(deleteCollectionCardsSql);
         jdbcTemplate.execute(deleteBoxSql);
     }
 
@@ -70,4 +79,20 @@ public class BoxAndCardServiceTest {
         assertEquals(2, cardBoxes.size(), "There should 2 boxes");
     }
 
+
+    @Test
+    @Sql("/sql/getCardBoxInformation.sql")
+    public void getCardBoxInformation(){
+        int cardBoxId = 2;
+        CardBox cardBox = boxAndCardService.getCardBoxInformation(cardBoxId);
+        assertEquals("second box", cardBox.getName());
+        assertEquals("black", cardBox.getColor());
+        assertNotNull(cardBox.getDeckCards());
+        assertEquals(2, cardBox.getDeckCards().size());
+        assertNotNull(cardBox.getCollectionCards());
+        assertEquals(1, cardBox.getCollectionCards().size());
+        assertEquals(0,cardBox.getLoanCards().size());
+    }
+
+    // TODO: Box deletion
 }

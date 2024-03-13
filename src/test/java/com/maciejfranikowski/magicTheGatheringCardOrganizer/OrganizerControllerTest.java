@@ -1,6 +1,7 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -77,5 +78,24 @@ public class OrganizerControllerTest {
         ModelAndViewAssert.assertViewName(modelAndView,"index");
         ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "boxes");
         ModelAndViewAssert.assertModelAttributeValue(modelAndView, "boxes", cardBoxList);
+    }
+    @Test
+    public void getCardBoxInformationHttpRequest() throws Exception {
+        int cardBoxId = 1;
+        String name = "added box";
+        String location = "known";
+        String color = "yellow";
+        CardBox cardBox = new CardBox(name, location, color);
+        LoanCard loanCard = new LoanCard(cardBox, "random card", "josh", "smith");
+        cardBox.setLoanCards(new ArrayList<>(List.of(loanCard)));
+        when(mockBoxAndCardService.getCardBoxInformation(cardBoxId)).thenReturn(cardBox);
+        assertEquals(cardBox, mockBoxAndCardService.getCardBoxInformation(cardBoxId));
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/cardBox/{id}",cardBoxId)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
     }
 }
