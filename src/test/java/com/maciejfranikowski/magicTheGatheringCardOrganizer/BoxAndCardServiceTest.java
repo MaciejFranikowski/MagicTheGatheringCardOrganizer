@@ -1,7 +1,10 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
-import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.*;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CardBoxDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CollectionCardDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.DeckCardDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.LoanCardDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,12 @@ public class BoxAndCardServiceTest {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private CardBoxDao cardBoxDao;
+    @Autowired
+    private DeckCardDao deckCardDao;
+    @Autowired
+    private CollectionCardDao collectionCardDao;
+    @Autowired
+    private LoanCardDao loanCardDao;
 
     @BeforeEach
     public void beforeEachSql(){
@@ -83,9 +92,6 @@ public class BoxAndCardServiceTest {
         assertTrue(boxAndCardService.checkIfCardBoxIsNull(2));
         assertFalse(boxAndCardService.checkIfCardBoxIsNull(1));
     }
-
-
-
     @Test
     @Sql("/sql/getCardBoxInformation.sql")
     public void getCardBoxInformation(){
@@ -99,6 +105,26 @@ public class BoxAndCardServiceTest {
         assertEquals(1, cardBox.getCollectionCards().size());
         assertEquals(0,cardBox.getLoanCards().size());
     }
-
-    // TODO: Box deletion
+    @Test
+    @Sql("/sql/deleteCardBox.sql")
+    public void deleteCardBox(){
+        int cardBoxId = 2;
+        Optional<CardBox> cardBoxOptional = cardBoxDao.findById(cardBoxId);
+        Optional<DeckCard> deckCardOptional = deckCardDao.findById(1);
+        Optional<LoanCard> loanCardOptional = loanCardDao.findById(1);
+        Optional<CollectionCard> collectionCardOptional = collectionCardDao.findById(1);
+        assertTrue(cardBoxOptional.isPresent());
+        assertTrue(deckCardOptional.isPresent());
+        assertTrue(collectionCardOptional.isPresent());
+        assertTrue(loanCardOptional.isPresent());
+        boxAndCardService.deleteCardBox(cardBoxId);
+        cardBoxOptional = cardBoxDao.findById(cardBoxId);
+        deckCardOptional = deckCardDao.findById(1);
+        loanCardOptional = loanCardDao.findById(1);
+        collectionCardOptional = collectionCardDao.findById(1);
+        assertFalse(cardBoxOptional.isPresent());
+        assertFalse(deckCardOptional.isPresent());
+        assertFalse(collectionCardOptional.isPresent());
+        assertFalse(loanCardOptional.isPresent());
+    }
 }

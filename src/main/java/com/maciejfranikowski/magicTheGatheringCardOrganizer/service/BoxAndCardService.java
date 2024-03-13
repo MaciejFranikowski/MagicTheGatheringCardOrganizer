@@ -36,4 +36,8 @@ public class BoxAndCardService {
     public boolean checkIfCardBoxIsNull(int cardBoxId){
         return cardBoxDao.findById(cardBoxId).isEmpty();
     }
+    public void deleteCardBox(int cardBoxId){
+        if(!checkIfCardBoxIsNull(cardBoxId))
+            cardBoxDao.deleteById(cardBoxId);
+    }
 }

@@ -16,11 +16,11 @@ public class CardBox {
     private String location;
     @Column(name = "color")
     private String color;
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE)
     private List<CollectionCard> collectionCards;
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE)
     private List<DeckCard> deckCards;
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE)
     private List<LoanCard> loanCards;
 
     public CardBox() {
