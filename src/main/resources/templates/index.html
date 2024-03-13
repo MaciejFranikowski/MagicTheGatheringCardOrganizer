@@ -44,10 +44,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Create new card box</button>
     </form>
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-hover text-center">
+        <thead class="thead-dark">
         <tr>
-            <th scope="col">Name</th>
+            <th  scope="col">Name</th>
             <th scope="col">Location</th>
             <th scope="col">Color</th>
             <th scope="col">No. of cards</th>
@@ -55,10 +55,10 @@
         </thead>
         <tbody>
         <tr th:each="box: ${boxes}">
-            <td th:text="${box.name}" th:onclick="|cardBoxPost('${box.id}');|"></td>
+            <td style="" th:text="${box.name}" th:onclick="|cardBoxPost('${box.id}');|"></td>
             <td th:text="${box.location}" th:onclick="|cardBoxPost('${box.id}');|"></td>
             <td th:text="${box.color}" th:onclick="|cardBoxPost('${box.id}');|">@mdo</td>
-            <td th:onclick="|cardBoxPost('${box.id}');|">0</td>
+            <td  th:onclick="|cardBoxPost('${box.id}');|">0</td>
         </tr>
         </tbody>
     </table>
