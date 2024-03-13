@@ -4,6 +4,7 @@ import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,12 @@ public class OrganizerControllerTest {
     private JdbcTemplate jdbcTemplate;
     @Value("${sql.scripts.delete.box}")
     private String deleteBoxSql;
+    @Value("${sql.scripts.create.box}")
+    private String createBoxSql;
+    @BeforeEach
+    public void setUpDatabase(){
+        jdbcTemplate.execute(createBoxSql);
+    }
     @AfterEach
     public void cleanUpDatabase(){
         jdbcTemplate.execute(deleteBoxSql);

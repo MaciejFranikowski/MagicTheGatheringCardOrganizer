@@ -36,4 +36,12 @@ public class OrganizerController {
         // TODO: add statistics: number of cards in each column
         return "cardBox";
     }
+    @GetMapping("/delete/cardBox/{id}")
+    public String deleteCardBox(@PathVariable int id, Model m){
+        if(boxAndCardService.checkIfCardBoxIsNull(id))
+            return "error";
+        boxAndCardService.deleteCardBox(id);
+        m.addAttribute("boxes", boxAndCardService.getCardBoxes());
+        return "index";
+    }
 }
