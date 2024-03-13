@@ -90,7 +90,7 @@ public class BoxAndCardServiceTest {
     @Test
     public void checkIfCardBoxIsNull(){
         assertTrue(boxAndCardService.checkIfCardBoxIsNull(2));
-        assertFalse(boxAndCardService.checkIfCardBoxIsNull(1));
+        assertFalse(boxAndCardService.checkIfCardBoxIsNull(99));
     }
     @Test
     @Sql("/sql/getCardBoxInformation.sql")
