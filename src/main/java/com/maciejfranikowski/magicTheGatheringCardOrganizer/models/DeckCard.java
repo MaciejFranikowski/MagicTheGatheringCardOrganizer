@@ -16,10 +16,6 @@ public class DeckCard implements Card{
     @Column(name = "deck_name")
     private String deckName;
     public DeckCard(){}
-    public DeckCard(CardBox box, String name){
-        this.box = box;
-        this.name = name;
-    }
     public DeckCard(CardBox box, String name, String deckName){
         this.box = box;
         this.name = name;
@@ -60,5 +56,15 @@ public class DeckCard implements Card{
 
     public void setDeckName(String deckName) {
         this.deckName = deckName;
+    }
+
+    @Override
+    public String toString() {
+        return "DeckCard{" +
+                "id=" + id +
+                ", box=" + box +
+                ", name='" + name + '\'' +
+                ", deckName='" + deckName + '\'' +
+                '}';
     }
 }

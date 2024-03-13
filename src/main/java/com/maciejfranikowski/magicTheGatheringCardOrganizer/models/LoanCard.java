@@ -18,10 +18,6 @@ public class LoanCard implements Card{
     @Column(name = "owner_lastname")
     private String ownerLastName;
     public LoanCard(){}
-    public LoanCard(CardBox box, String name){
-        this.box = box;
-        this.name = name;
-    }
     public LoanCard(CardBox box, String name, String ownerFirstName, String ownerLastName){
         this.box = box;
         this.name = name;
@@ -71,5 +67,16 @@ public class LoanCard implements Card{
 
     public void setOwnerLastName(String ownerLastName) {
         this.ownerLastName = ownerLastName;
+    }
+
+    @Override
+    public String toString() {
+        return "LoanCard{" +
+                "id=" + id +
+                ", box=" + box +
+                ", name='" + name + '\'' +
+                ", ownerFirstName='" + ownerFirstName + '\'' +
+                ", ownerLastName='" + ownerLastName + '\'' +
+                '}';
     }
 }

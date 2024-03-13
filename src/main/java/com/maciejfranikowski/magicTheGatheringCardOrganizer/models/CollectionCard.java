@@ -16,10 +16,6 @@ public class CollectionCard implements Card{
     @Column(name = "set_name")
     private String setName;
     public CollectionCard(){}
-    public CollectionCard(CardBox box, String name){
-        this.box = box;
-        this.name = name;
-    }
     public CollectionCard(CardBox box, String name, String setName){
         this.box = box;
         this.name = name;
@@ -60,5 +56,15 @@ public class CollectionCard implements Card{
 
     public void setSetName(String setName) {
         this.setName = setName;
+    }
+
+    @Override
+    public String toString() {
+        return "CollectionCard{" +
+                "id=" + id +
+                ", box=" + box +
+                ", name='" + name + '\'' +
+                ", setName='" + setName + '\'' +
+                '}';
     }
 }
