@@ -55,13 +55,14 @@
         </thead>
         <tbody>
         <tr th:each="box: ${boxes}">
-            <td th:text="${box.name}"></td>
-            <td th:text="${box.location}"></td>
-            <td th:text="${box.color}">@mdo</td>
-            <td>0</td>
+            <td th:text="${box.name}" th:onclick="|cardBoxPost('${box.id}');|"></td>
+            <td th:text="${box.location}" th:onclick="|cardBoxPost('${box.id}');|"></td>
+            <td th:text="${box.color}" th:onclick="|cardBoxPost('${box.id}');|">@mdo</td>
+            <td th:onclick="|cardBoxPost('${box.id}');|">0</td>
         </tr>
         </tbody>
     </table>
 </div>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
 </body>
 </html>

@@ -5,9 +5,7 @@ import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class OrganizerController {
@@ -27,5 +25,15 @@ public class OrganizerController {
         boxAndCardService.createCardBox(box.getName(), box.getLocation(), box.getColor());
         m.addAttribute("boxes", boxAndCardService.getCardBoxes());
         return "index";
+    }
+    @GetMapping("/cardBox/{id}")
+    public String getCardBox(@PathVariable int id, Model m){
+        if(boxAndCardService.checkIfCardBoxIsNull(id)){
+            return "error";
+        }
+        CardBox cardBox = boxAndCardService.getCardBoxInformation(id);
+        m.addAttribute("cardBox", cardBox);
+        // TODO: add statistics: number of cards in each column
+        return "cardBox";
     }
 }

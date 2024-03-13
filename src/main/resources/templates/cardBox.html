@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MTG CO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark main-color fixed-top">
+    <a class="navbar-brand" href="/">MTGO</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+    <h2 th:text="'Box: '+${cardBox.name}">
+    </h2>
+    <h3 th:text="'Location: '+${cardBox.location}">
+    </h3>
+    <h3 th:text="'Color: '+${cardBox.color}">
+    </h3>
+    <hr>
+    <div class="row">
+        <div class="col-sm">
+            <h3>Deck cards</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Card name</th>
+                    <th scope="col">Deck name</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="card: ${cardBox.deckCards}">
+                        <td th:text="${card.name}"></td>
+                        <td th:text="${card.deckName}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <h3>Collection cards</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Card name</th>
+                    <th scope="col">Set name</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="card: ${cardBox.collectionCards}">
+                        <td th:text="${card.name}"></td>
+                        <td th:text="${card.setName}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <h3>Loan cards</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Card name</th>
+                    <th scope="col">Owner name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tbody>
+                    <tr th:each="card: ${cardBox.loanCards}">
+                        <td th:text="${card.name}"></td>
+                        <td th:text="${card.ownerFirstName}"></td>
+                        <td th:text="${card.ownerLastName}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
