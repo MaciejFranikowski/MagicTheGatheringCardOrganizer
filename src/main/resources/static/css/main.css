@@ -19,3 +19,11 @@ h1, h2, h3, h4, h5, h6 {
 .table tr td {
     vertical-align: middle;
 }
+
+.container-fluid-margins{
+    padding-right: 45px;
+    padding-left: 45px;
+}
+.form-control-margin{
+    margin-bottom: 10px;
+}

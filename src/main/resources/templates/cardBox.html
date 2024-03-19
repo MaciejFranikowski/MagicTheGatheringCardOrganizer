@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>MTG CO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
@@ -24,7 +25,7 @@
 </nav>
 
 
-<div class="container">
+<div class="container-fluid-margins container-fluid">
     <div class="card">
         <h5 class="card-header">Showing cards for: </h5>
         <div class="card-body">
@@ -38,14 +39,12 @@
             <form class="mb-2" method="POST" th:action="@{/create/card/deck}">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="deckCardName">Name</label>
-                        <input class="form-control" name="name" id="deckCardName" placeholder="card name" required>
+                        <input class="form-control" name="name" id="deckCardName" placeholder="Card name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="deckName">Deck Name</label>
-                        <input class="form-control" name="deckName" id="deckName" placeholder="deck name" required>
+                        <input class="form-control" name="deckName" id="deckName" placeholder="Deck name" required>
                     </div>
                     <input type="hidden" name="boxId" th:value="${cardBox.id}" />
                 </div>
@@ -53,14 +52,16 @@
                     <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>
                 </div>
             </form>
-            <table class="table table-striped table-hover text-center">
+            <hr>
+            <input class="form-control form-control-margin" id="deckTableSearch" type="text" placeholder="Search..">
+            <table class="table table-striped table-hover text-center" data-search="true">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Deck name</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="deckTable">
                     <tr th:each="card: ${cardBox.deckCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.deckName}"></td>
@@ -73,14 +74,12 @@
             <form class="mb-2" method="POST" th:action="@{/create/card/collection}">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="collectionCardName">Name</label>
-                        <input class="form-control" name="name" id="collectionCardName" placeholder="card name" required>
+                        <input class="form-control" name="name" id="collectionCardName" placeholder="Card name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="setName">Set Name</label>
-                        <input class="form-control" name="setName" id="setName" placeholder="set name" required>
+                        <input class="form-control" name="setName" id="setName" placeholder="Set name" required>
                     </div>
                     <input type="hidden" name="boxId" th:value="${cardBox.id}" />
                 </div>
@@ -88,6 +87,8 @@
                     <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>
                 </div>
             </form>
+            <hr>
+            <input class="form-control form-control-margin" id="collectionTableSearch" type="text" placeholder="Search..">
             <table class="table table-striped table-hover text-center">
                 <thead class="thead-dark">
                 <tr>
@@ -95,7 +96,7 @@
                     <th scope="col">Set name</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="collectionTable">
                     <tr th:each="card: ${cardBox.collectionCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.setName}"></td>
@@ -108,26 +109,24 @@
             <form class="mb-2" method="POST" th:action="@{/create/card/loan}">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="loanCardName">Name</label>
-                        <input class="form-control" name="name" id="loanCardName" placeholder="card name" required>
+                        <input class="form-control" name="name" id="loanCardName" placeholder="Card name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="ownerFirstName">Owner First Name</label>
-                        <input class="form-control" name="ownerFirstName" id="ownerFirstName" placeholder="owner first name" required>
+                        <input class="form-control" name="ownerFirstName" id="ownerFirstName" placeholder="Owner first name" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="ownerLastName">Owner Last Name</label>
-                        <input class="form-control" name="ownerLastName" id="ownerLastName" placeholder="owner last name" required>
+                        <input class="form-control" name="ownerLastName" id="ownerLastName" placeholder="Owner last name" required>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <input type="hidden" name="boxId" th:value="${cardBox.id}" />
                     <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>
                 </div>
             </form>
+            <hr>
+            <input class="form-control form-control-margin" id="loanTableSearch" type="text" placeholder="Search..">
             <table class="table table-striped table-hover text-center">
                 <thead class="thead-dark">
                 <tr>
@@ -135,8 +134,7 @@
                     <th scope="col">Owner name</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tbody>
+                <tbody id="loanTable">
                     <tr th:each="card: ${cardBox.loanCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.ownerFirstName} + ' ' + ${card.ownerLastName}"></td>
@@ -145,8 +143,7 @@
             </table>
         </div>
     </div>
-
 </div>
-
+<script type="text/javascript" th:src="@{/js/cardBox.js}"></script>
 </body>
 </html>
