@@ -1,6 +1,7 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CollectionCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.DeckCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
@@ -145,6 +146,28 @@ public class OrganizerControllerTest {
                 .param("name",cardName)
                 .param("ownerFirstName", ownerFirstName)
                 .param("ownerLastName", ownerLastName)
+                .param("boxId", Integer.toString(deckBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
+    @Test
+    public void createCollectionCardHttpRequest() throws Exception {
+        String cardName = "Force of Will";
+        String setName = "Nemesis";
+        int deckBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(deckBoxId);
+        CollectionCard collectionCard = new CollectionCard(cardBox, cardName, setName);
+        cardBox.setCollectionCards(new ArrayList<>(List.of(collectionCard)));
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardBoxIsNull(99)).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/create/card/collection")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name",cardName)
+                .param("setName", setName)
                 .param("boxId", Integer.toString(deckBoxId))
         ).andExpect(status().isOk()).andReturn();
         ModelAndView modelAndView = mvcResult.getModelAndView();

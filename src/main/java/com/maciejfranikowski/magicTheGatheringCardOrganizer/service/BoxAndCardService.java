@@ -1,9 +1,11 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer.service;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CollectionCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.DeckCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CardBoxDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CollectionCardDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.DeckCardDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.LoanCardDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,15 @@ public class BoxAndCardService {
     private final CardBoxDao cardBoxDao;
     private final DeckCardDao deckCardDao;
     private final LoanCardDao loanCardDao;
+    private final CollectionCardDao collectionCardDao;
     public BoxAndCardService(@Autowired CardBoxDao cardBoxDao,
                              @Autowired DeckCardDao deckCardDao,
-                             @Autowired LoanCardDao loanCardDao){
+                             @Autowired LoanCardDao loanCardDao,
+                             @Autowired CollectionCardDao collectionCardDao){
         this.cardBoxDao =  cardBoxDao;
         this.deckCardDao = deckCardDao;
         this.loanCardDao = loanCardDao;
+        this.collectionCardDao = collectionCardDao;
     }
 
     public Iterable<CardBox> getCardBoxes(){return cardBoxDao.findAll();}
@@ -67,6 +72,15 @@ public class BoxAndCardService {
         LoanCard loanCard = new LoanCard(cardBoxDao.findById(boxId).get(), name, ownerFirstName, ownerLastName);
         loanCard.setId(0);
         loanCardDao.save(loanCard);
+        return true;
+    }
+    public boolean createCollectionCard(int boxId, String name, String setName){
+        if(checkIfCardBoxIsNull(boxId)){
+            return false;
+        }
+        CollectionCard collectionCard = new CollectionCard(cardBoxDao.findById(boxId).get(), name, setName);
+        collectionCard.setId(0);
+        collectionCardDao.save(collectionCard);
         return true;
     }
 }

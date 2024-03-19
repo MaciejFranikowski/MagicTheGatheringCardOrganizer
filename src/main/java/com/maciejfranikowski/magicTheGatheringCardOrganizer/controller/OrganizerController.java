@@ -70,4 +70,17 @@ public class OrganizerController {
         m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
         return "cardBox";
     }
+    @PostMapping("/create/card/collection")
+    public String createCollectionCard(
+            @RequestParam String name,
+            @RequestParam String setName,
+            @RequestParam int boxId,
+            Model m){
+        if(boxAndCardService.checkIfCardBoxIsNull(boxId))
+            return "error";
+
+        boxAndCardService.createCollectionCard(boxId, name, setName);
+        m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
+        return "cardBox";
+    }
 }

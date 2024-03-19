@@ -2,6 +2,7 @@ package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CardBoxDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CollectionCardDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.DeckCardDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.LoanCardDao;
 import org.junit.jupiter.api.AfterEach;
@@ -47,6 +48,8 @@ public class OrganizerControllerIntegrationTest {
     private DeckCardDao deckCardDao;
     @Autowired
     private LoanCardDao loanCardDao;
+    @Autowired
+    private CollectionCardDao collectionCardDao;
     @BeforeEach
     public void setUpDatabase(){
         jdbcTemplate.execute(createBoxSql);
@@ -114,5 +117,23 @@ public class OrganizerControllerIntegrationTest {
         assertNotNull(modelAndView);
         ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
         assertEquals(loanCardDao.findAll().size(), 1);
+    }
+    @Test
+    public void createCollectionCardHttpRequest() throws Exception {
+        String cardName = "Force of Will";
+        String setName = "Nemesis";
+        int deckBoxId = 99;
+        assertTrue(cardBoxDao.findById(deckBoxId).isPresent());
+        assertEquals(collectionCardDao.findAll().size(), 0);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/create/card/collection")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name",cardName)
+                .param("setName", setName)
+                .param("boxId", Integer.toString(deckBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
+        assertEquals(collectionCardDao.findAll().size(), 1);
     }
 }
