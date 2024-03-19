@@ -1,6 +1,7 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.DeckCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
 import org.junit.jupiter.api.AfterEach;
@@ -99,6 +100,28 @@ public class OrganizerControllerTest {
         assertEquals(cardBox, mockBoxAndCardService.getCardBoxInformation(cardBoxId));
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/cardBox/{id}",cardBoxId)
                 .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
+    @Test
+    public void createDeckCardHttpRequest() throws Exception {
+        String cardName = "Force of Will";
+        String deckName = "Grixis Delver";
+        int deckBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(deckBoxId);
+        DeckCard deckCard = new DeckCard(cardBox, cardName, deckName);
+        cardBox.setDeckCards(new ArrayList<>(List.of(deckCard)));
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardBoxIsNull(99)).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/create/card/deck")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name",cardName)
+                .param("deckName", deckName)
+                .param("boxId", Integer.toString(deckBoxId))
         ).andExpect(status().isOk()).andReturn();
         ModelAndView modelAndView = mvcResult.getModelAndView();
         assertNotNull(modelAndView);

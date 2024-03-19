@@ -25,18 +25,32 @@
 
 
 <div class="container">
-    <h2 th:text="'Box: '+${cardBox.name}">
-    </h2>
-    <h3 th:text="'Location: '+${cardBox.location}">
-    </h3>
-    <h3 th:text="'Color: '+${cardBox.color}">
-    </h3>
+    <div class="card">
+        <h5 class="card-header">Showing cards for: </h5>
+        <div class="card-body">
+            <h5 class="card-title"><span th:text="${cardBox.name}+', '+${cardBox.location}+', '+${cardBox.color}"></span></h5>
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="col-sm">
             <h3>Deck cards</h3>
-            <table class="table">
-                <thead>
+            <form class="mb-2" method="POST" th:action="@{/create/card/deck}">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="deckCardName">Name</label>
+                        <input class="form-control" name="name" id="deckCardName" placeholder="card name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="deckName">Deck Name</label>
+                        <input class="form-control" name="deckName" id="deckName" placeholder="deck name" required>
+                    </div>
+                    <input type="hidden" name="boxId" th:value="${cardBox.id}" />
+                </div>
+                <button type="submit" class="btn btn-primary">Add card</button>
+            </form>
+            <table class="table table-striped table-hover text-center">
+                <thead class="thead-dark">
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Deck name</th>

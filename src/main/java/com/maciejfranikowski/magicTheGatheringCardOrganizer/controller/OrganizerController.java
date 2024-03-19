@@ -44,4 +44,16 @@ public class OrganizerController {
         m.addAttribute("boxes", boxAndCardService.getCardBoxes());
         return "index";
     }
+    @PostMapping("/create/card/deck")
+    public String createCard(@RequestParam String name,
+                             @RequestParam String deckName,
+                             @RequestParam int boxId,
+                             Model m){
+        if(boxAndCardService.checkIfCardBoxIsNull(boxId))
+            return "error";
+
+        boxAndCardService.createDeckCard(boxId, name, deckName);
+        m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
+        return "cardBox";
+    }
 }

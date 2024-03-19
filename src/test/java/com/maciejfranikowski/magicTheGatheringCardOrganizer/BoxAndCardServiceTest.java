@@ -15,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,4 +128,23 @@ public class BoxAndCardServiceTest {
         assertFalse(collectionCardOptional.isPresent());
         assertFalse(loanCardOptional.isPresent());
     }
+    @Test
+    public void createDeckCard(){
+        Optional<CardBox> cardBox = cardBoxDao.findById(99);
+        assertTrue(cardBox.isPresent());
+        assertTrue(boxAndCardService.createDeckCard(99, "Force of Will", "SultaiBeans"));
+        Iterable<DeckCard> deckCards = deckCardDao.findByBox(cardBox.get());
+        assertEquals(((Collection<DeckCard>)deckCards).size(), 1);
+    }
+    @Test
+    public void createDeckCardWrongBox(){
+        Optional<CardBox> cardBox = cardBoxDao.findById(100);
+        assertTrue(cardBox.isEmpty());
+        CardBox fakeCardBox = new CardBox("not saved box", "hidden", "black");
+        fakeCardBox.setId(100);
+        assertFalse(boxAndCardService.createDeckCard(100, "Force of Will", "SultaiBeans"));
+        Iterable<DeckCard> deckCards = deckCardDao.findByBox(fakeCardBox);
+        assertEquals(((Collection<DeckCard>)deckCards).size(), 0);
+    }
+
 }
