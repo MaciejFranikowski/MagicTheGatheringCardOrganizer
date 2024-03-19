@@ -37,17 +37,21 @@
             <h3>Deck cards</h3>
             <form class="mb-2" method="POST" th:action="@{/create/card/deck}">
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label for="deckCardName">Name</label>
                         <input class="form-control" name="name" id="deckCardName" placeholder="card name" required>
                     </div>
-                    <div class="form-group col-md-6">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
                         <label for="deckName">Deck Name</label>
                         <input class="form-control" name="deckName" id="deckName" placeholder="deck name" required>
                     </div>
                     <input type="hidden" name="boxId" th:value="${cardBox.id}" />
                 </div>
-                <button type="submit" class="btn btn-primary">Add card</button>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>
+                </div>
             </form>
             <table class="table table-striped table-hover text-center">
                 <thead class="thead-dark">
@@ -83,8 +87,31 @@
         </div>
         <div class="col-sm">
             <h3>Loan cards</h3>
-            <table class="table">
-                <thead>
+            <form class="mb-2" method="POST" th:action="@{/create/card/loan}">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="loanCardName">Name</label>
+                        <input class="form-control" name="name" id="loanCardName" placeholder="card name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="ownerFirstName">Owner First Name</label>
+                        <input class="form-control" name="ownerFirstName" id="ownerFirstName" placeholder="owner first name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="ownerLastName">Owner Last Name</label>
+                        <input class="form-control" name="ownerLastName" id="ownerLastName" placeholder="owner last name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <input type="hidden" name="boxId" th:value="${cardBox.id}" />
+                    <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>
+                </div>
+            </form>
+            <table class="table table-striped table-hover text-center">
+                <thead class="thead-dark">
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Owner name</th>
@@ -94,8 +121,7 @@
                 <tbody>
                     <tr th:each="card: ${cardBox.loanCards}">
                         <td th:text="${card.name}"></td>
-                        <td th:text="${card.ownerFirstName}"></td>
-                        <td th:text="${card.ownerLastName}"></td>
+                        <td th:text="${card.ownerFirstName} + ' ' + ${card.ownerLastName}"></td>
                     </tr>
                 </tbody>
             </table>

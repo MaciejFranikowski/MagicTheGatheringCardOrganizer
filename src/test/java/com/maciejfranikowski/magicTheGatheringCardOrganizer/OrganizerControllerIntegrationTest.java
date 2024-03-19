@@ -3,6 +3,7 @@ package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CardBoxDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.DeckCardDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.LoanCardDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,8 @@ public class OrganizerControllerIntegrationTest {
     private CardBoxDao cardBoxDao;
     @Autowired
     private DeckCardDao deckCardDao;
+    @Autowired
+    private LoanCardDao loanCardDao;
     @BeforeEach
     public void setUpDatabase(){
         jdbcTemplate.execute(createBoxSql);
@@ -91,5 +94,25 @@ public class OrganizerControllerIntegrationTest {
         assertNotNull(modelAndView);
         ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
         assertEquals(deckCardDao.findAll().size(), 1);
+    }
+    @Test
+    public void createLoanCardHttpRequest() throws Exception {
+        String cardName = "Force of Will";
+        String ownerFirstName = "John";
+        String ownerLastName = "Smith";
+        int deckBoxId = 99;
+        assertTrue(cardBoxDao.findById(deckBoxId).isPresent());
+        assertEquals(loanCardDao.findAll().size(), 0);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/create/card/loan")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name",cardName)
+                .param("ownerFirstName", ownerFirstName)
+                .param("ownerLastName", ownerLastName)
+                .param("boxId", Integer.toString(deckBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
+        assertEquals(loanCardDao.findAll().size(), 1);
     }
 }

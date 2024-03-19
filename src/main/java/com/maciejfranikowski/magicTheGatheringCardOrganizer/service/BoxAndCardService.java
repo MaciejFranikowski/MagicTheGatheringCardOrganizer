@@ -2,8 +2,10 @@ package com.maciejfranikowski.magicTheGatheringCardOrganizer.service;
 
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.DeckCard;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.LoanCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.CardBoxDao;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.DeckCardDao;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.repository.LoanCardDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +17,13 @@ import java.util.Optional;
 public class BoxAndCardService {
     private final CardBoxDao cardBoxDao;
     private final DeckCardDao deckCardDao;
-    public BoxAndCardService(@Autowired CardBoxDao cardBoxDao, @Autowired DeckCardDao deckCardDao){
+    private final LoanCardDao loanCardDao;
+    public BoxAndCardService(@Autowired CardBoxDao cardBoxDao,
+                             @Autowired DeckCardDao deckCardDao,
+                             @Autowired LoanCardDao loanCardDao){
         this.cardBoxDao =  cardBoxDao;
         this.deckCardDao = deckCardDao;
+        this.loanCardDao = loanCardDao;
     }
 
     public Iterable<CardBox> getCardBoxes(){return cardBoxDao.findAll();}
@@ -52,6 +58,15 @@ public class BoxAndCardService {
         DeckCard deckCard = new DeckCard(cardBoxDao.findById(boxId).get(), name, deckName);
         deckCard.setId(0);
         deckCardDao.save(deckCard);
+        return true;
+    }
+    public boolean createLoanCard(int boxId, String name, String ownerFirstName, String ownerLastName){
+        if(checkIfCardBoxIsNull(boxId)){
+            return false;
+        }
+        LoanCard loanCard = new LoanCard(cardBoxDao.findById(boxId).get(), name, ownerFirstName, ownerLastName);
+        loanCard.setId(0);
+        loanCardDao.save(loanCard);
         return true;
     }
 }

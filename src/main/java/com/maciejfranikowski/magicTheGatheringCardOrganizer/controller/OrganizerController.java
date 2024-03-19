@@ -45,7 +45,7 @@ public class OrganizerController {
         return "index";
     }
     @PostMapping("/create/card/deck")
-    public String createCard(@RequestParam String name,
+    public String createDeckCard(@RequestParam String name,
                              @RequestParam String deckName,
                              @RequestParam int boxId,
                              Model m){
@@ -53,6 +53,20 @@ public class OrganizerController {
             return "error";
 
         boxAndCardService.createDeckCard(boxId, name, deckName);
+        m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
+        return "cardBox";
+    }
+    @PostMapping("/create/card/loan")
+    public String createLoanCard(
+            @RequestParam String name,
+            @RequestParam String ownerFirstName,
+            @RequestParam String ownerLastName,
+            @RequestParam int boxId,
+                             Model m){
+        if(boxAndCardService.checkIfCardBoxIsNull(boxId))
+            return "error";
+
+        boxAndCardService.createLoanCard(boxId, name, ownerFirstName, ownerLastName);
         m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
         return "cardBox";
     }

@@ -128,4 +128,28 @@ public class OrganizerControllerTest {
         ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
         ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
     }
+    @Test
+    public void createLoanCardHttpRequest() throws Exception {
+        String cardName = "Force of Will";
+        String ownerFirstName = "John";
+        String ownerLastName = "Smith";
+        int deckBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(deckBoxId);
+        LoanCard loanCard = new LoanCard(cardBox, cardName, ownerFirstName, ownerLastName);
+        cardBox.setLoanCards(new ArrayList<>(List.of(loanCard)));
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardBoxIsNull(99)).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/create/card/loan")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name",cardName)
+                .param("ownerFirstName", ownerFirstName)
+                .param("ownerLastName", ownerLastName)
+                .param("boxId", Integer.toString(deckBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
 }

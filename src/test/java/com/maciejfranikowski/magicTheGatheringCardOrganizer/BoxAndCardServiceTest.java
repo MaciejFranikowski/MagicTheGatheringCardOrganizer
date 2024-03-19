@@ -112,7 +112,7 @@ public class BoxAndCardServiceTest {
         int cardBoxId = 2;
         Optional<CardBox> cardBoxOptional = cardBoxDao.findById(cardBoxId);
         Optional<DeckCard> deckCardOptional = deckCardDao.findById(1);
-        Optional<LoanCard> loanCardOptional = loanCardDao.findById(1);
+        Optional<LoanCard> loanCardOptional = loanCardDao.findByName("Daze");
         Optional<CollectionCard> collectionCardOptional = collectionCardDao.findById(1);
         assertTrue(cardBoxOptional.isPresent());
         assertTrue(deckCardOptional.isPresent());
@@ -145,6 +145,24 @@ public class BoxAndCardServiceTest {
         assertFalse(boxAndCardService.createDeckCard(100, "Force of Will", "SultaiBeans"));
         Iterable<DeckCard> deckCards = deckCardDao.findByBox(fakeCardBox);
         assertEquals(((Collection<DeckCard>)deckCards).size(), 0);
+    }
+    @Test
+    public void createLoanCard(){
+        Optional<CardBox> cardBox = cardBoxDao.findById(99);
+        assertTrue(cardBox.isPresent());
+        assertTrue(boxAndCardService.createLoanCard(99, "Force of Will", "Maciej", "Franikowski"));
+        Iterable<LoanCard> loanCards = loanCardDao.findByBox(cardBox.get());
+        assertEquals(((Collection<LoanCard>)loanCards).size(), 1);
+    }
+    @Test
+    public void createLoanCardWrongBox(){
+        Optional<CardBox> cardBox = cardBoxDao.findById(100);
+        assertTrue(cardBox.isEmpty());
+        CardBox fakeCardBox = new CardBox("not saved box", "hidden", "black");
+        fakeCardBox.setId(100);
+        assertFalse(boxAndCardService.createLoanCard(100, "Force of Will", "Maciej", "Franikowski"));
+        Iterable<LoanCard> loanCards = loanCardDao.findByBox(fakeCardBox);
+        assertEquals(((Collection<LoanCard>)loanCards).size(), 0);
     }
 
 }
