@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>MTG CO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
@@ -41,7 +41,7 @@
                     <div class="form-group col-md-12">
                         <div class="position-relative">
                             <input class="form-control card-search" data-dropdown="Deck" name="name" id="deckCardName"
-                                   placeholder="Card name" required>
+                                   placeholder="Enter a Card name" required>
                             <div id="dropdownMenuDeck" class="dropdown-menu" style="width: 100%; display: none;"></div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                     <div class="form-group col-md-12">
                         <div class="position-relative">
                             <input class="form-control card-search" data-dropdown="Collection" name="name"
-                                   id="collectionCardName" placeholder="Card name" required>
+                                   id="collectionCardName" placeholder="Enter a Card name" required>
                             <div id="dropdownMenuCollection" class="dropdown-menu" style="width: 100%; display: none;"></div>
                         </div>
                     </div>
@@ -157,14 +157,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-
-<div class="container mt-5">
-    <h2>Search API Demo</h2>
-    <div class="position-relative">
-        <input type="text" id="searchInput" class="form-control mt-3" placeholder="Enter your search query">
-        <div id="dropdownMenu" class="dropdown-menu" style="width: 100%; display: none;"></div>
     </div>
 </div>
 
