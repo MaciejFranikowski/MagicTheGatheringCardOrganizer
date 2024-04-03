@@ -1,24 +1,54 @@
 $(document).ready(function(){
-    $("#deckTableSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#deckTable tr").filter(function() {
+    $(".table-search").on("keyup", function() {
+        const value = $(this).val().toLowerCase();
+        const tableType = $(this).data('tr-name');
+        const $tableTr = $('#'+tableType+'Table tr');
+        $tableTr.filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
 });
-$(document).ready(function(){
-    $("#collectionTableSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#collectionTable tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
+
+$(document).ready(function (){
+    $('.card-search').on('input', function (){
+        var query = $(this).val().trim();
+        var dropdownId = $(this).data('dropdown');
+        var $dropdown = $('#dropdownMenu' + dropdownId);
+        console.log(query);
+        console.log(dropdownId);
+
+        // if (query !== '') {
+        //     $.ajax({
+        //         url: '/api/search?q=' + encodeURIComponent(query),
+        //         method: 'GET',
+        //         success: function(response) {
+        //             displayResults(response, $dropdown);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // } else {
+        //     $dropdown.empty().hide();
+        // }
+        displayResults(['Daze','Fow'], $dropdown);
     });
-});
-$(document).ready(function(){
-    $("#loanTableSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#loanTable tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
+    function displayResults(results, $dropdown) {
+        $dropdown.empty();
+        if (results.length > 0) {
+            $.each(results, function(index, result) {
+                $dropdown.append('<a class="dropdown-item" href="#">' + result + '</a>');
+            });
+            $dropdown.show();
+        } else {
+            $dropdown.hide();
+        }
+    }
+
+    $(document).on('click', '.dropdown-menu .dropdown-item', function() {
+        var selectedValue = $(this).text();
+        var $input = $(this).closest('.position-relative').find('.card-search');
+        $input.val(selectedValue);
+        $('.dropdown-menu').hide();
     });
-});
+})
