@@ -14,24 +14,20 @@ $(document).ready(function (){
         var query = $(this).val().trim();
         var dropdownId = $(this).data('dropdown');
         var $dropdown = $('#dropdownMenu' + dropdownId);
-        console.log(query);
-        console.log(dropdownId);
-
-        // if (query !== '') {
-        //     $.ajax({
-        //         url: '/api/search?q=' + encodeURIComponent(query),
-        //         method: 'GET',
-        //         success: function(response) {
-        //             displayResults(response, $dropdown);
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // } else {
-        //     $dropdown.empty().hide();
-        // }
-        displayResults(['Daze','Fow'], $dropdown);
+        if (query !== '') {
+            $.ajax({
+                url: '/api/cards/autocomplete/' + encodeURIComponent(query),
+                method: 'GET',
+                success: function(response) {
+                    displayResults(response, $dropdown);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        } else {
+            $dropdown.empty().hide();
+        }
     });
     function displayResults(results, $dropdown) {
         $dropdown.empty();
