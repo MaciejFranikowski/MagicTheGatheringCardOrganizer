@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class AutocompleteCards {
+public class AutoCompleteCards {
     @JsonProperty("object")
     private String object;
 
