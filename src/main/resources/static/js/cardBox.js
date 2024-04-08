@@ -49,15 +49,12 @@ $(document).ready(function (){
     });
 })
 function deleteCard(id, type, boxId) {
-    // this.window.location = "/deleteCardBox/"+id
     $.ajax({
         url: '/deleteCard/'+type+'/'+id,
         data:{
             boxId:boxId,
         },
-        method: 'GET',
-        success: function() {
-            location.reload();
-        },
-    })
+        method: 'GET'
+    });
+    this.window.location="/cardBox/"+boxId;
 }
