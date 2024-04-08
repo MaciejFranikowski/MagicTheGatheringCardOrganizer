@@ -83,4 +83,12 @@ public class OrganizerController {
         m.addAttribute("cardBox",boxAndCardService.getCardBoxInformation(boxId));
         return "cardBox";
     }
+    @GetMapping("/deleteCard/{type}/{id}")
+    public String deleteCard(@PathVariable String type,@PathVariable int id, Model m, @RequestParam int boxId){
+        if(boxAndCardService.checkIfCardIsNull(id, type))
+            return "error";
+        boxAndCardService.deleteCard(id, type);
+        m.addAttribute("cardBox", boxAndCardService.getCardBoxInformation(boxId));
+        return "cardBox";
+    }
 }

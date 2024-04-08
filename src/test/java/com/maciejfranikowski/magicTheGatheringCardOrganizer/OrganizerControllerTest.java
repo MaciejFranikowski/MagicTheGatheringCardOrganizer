@@ -175,4 +175,55 @@ public class OrganizerControllerTest {
         ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
         ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
     }
+    @Test
+    public void deleteDeckCard() throws Exception {
+        int deckBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(deckBoxId);
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardIsNull(3, "deck")).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","deck","1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId", Integer.toString(deckBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
+    @Test
+    public void deleteLoanCard() throws Exception {
+        int loanBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(loanBoxId);
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardIsNull(3, "loan")).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","loan","1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId", Integer.toString(loanBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
+    @Test
+    public void deleteCollectionCard() throws Exception {
+        int collectionBoxId = 99;
+        CardBox cardBox = new CardBox("test box", "hidden", "black");
+        cardBox.setId(collectionBoxId);
+        when(mockBoxAndCardService.getCardBoxInformation(99)).thenReturn(cardBox);
+        when(mockBoxAndCardService.checkIfCardIsNull(3, "loan")).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","collection","1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId", Integer.toString(collectionBoxId))
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
+    }
 }

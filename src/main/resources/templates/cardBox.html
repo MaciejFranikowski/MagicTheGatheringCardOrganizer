@@ -64,12 +64,18 @@
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Deck name</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody id="deckTable">
                     <tr th:each="card: ${cardBox.deckCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.deckName}"></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger"
+                                    th:onclick="|deleteCard('${card.id}', 'deck', '${cardBox.id}')|">Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -104,12 +110,18 @@
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Set name</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody id="collectionTable">
                     <tr th:each="card: ${cardBox.collectionCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.setName}"></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger"
+                                    th:onclick="|deleteCard('${card.id}', 'collection', '${cardBox.id}')|">Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -147,12 +159,18 @@
                 <tr>
                     <th scope="col">Card name</th>
                     <th scope="col">Owner name</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody id="loanTable">
                     <tr th:each="card: ${cardBox.loanCards}">
                         <td th:text="${card.name}"></td>
                         <td th:text="${card.ownerFirstName} + ' ' + ${card.ownerLastName}"></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger"
+                                    th:onclick="|deleteCard('${card.id}', 'loan', '${cardBox.id}')|">Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

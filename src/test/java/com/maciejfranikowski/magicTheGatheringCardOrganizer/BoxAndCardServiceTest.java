@@ -111,7 +111,7 @@ public class BoxAndCardServiceTest {
     public void deleteCardBox(){
         int cardBoxId = 2;
         Optional<CardBox> cardBoxOptional = cardBoxDao.findById(cardBoxId);
-        Optional<DeckCard> deckCardOptional = deckCardDao.findById(1);
+        Optional<DeckCard> deckCardOptional = deckCardDao.findByName("Force of will");
         Optional<LoanCard> loanCardOptional = loanCardDao.findByName("Daze");
         Optional<CollectionCard> collectionCardOptional = collectionCardDao.findByName("Plains");
         assertTrue(cardBoxOptional.isPresent());
@@ -181,6 +181,60 @@ public class BoxAndCardServiceTest {
         assertFalse(boxAndCardService.createCollectionCard(100, "Force of Will", "Nemesis"));
         Iterable<CollectionCard> collectionCards = collectionCardDao.findByBox(fakeCardBox);
         assertEquals(((Collection<CollectionCard>)collectionCards).size(), 0);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteDeckCard(){
+        List<DeckCard> deckCards = deckCardDao.findAll();
+        assertEquals(deckCards.size(), 1);
+        assertTrue(boxAndCardService.deleteCard(66,"deck"));
+        deckCards = deckCardDao.findAll();
+        assertEquals(deckCards.size(), 0);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteDeckCard_NotFound(){
+        List<DeckCard> deckCards = deckCardDao.findAll();
+        assertEquals(deckCards.size(), 1);
+        assertFalse(boxAndCardService.deleteCard(67,"deck"));
+        deckCards = deckCardDao.findAll();
+        assertEquals(deckCards.size(), 1);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteLoanCard(){
+        List<LoanCard> loanCards = loanCardDao.findAll();
+        assertEquals(loanCards.size(), 1);
+        assertTrue(boxAndCardService.deleteCard(66,"loan"));
+        loanCards = loanCardDao.findAll();
+        assertEquals(loanCards.size(), 0);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteLoanCard_NotFound(){
+        List<LoanCard> loanCards = loanCardDao.findAll();
+        assertEquals(loanCards.size(), 1);
+        assertFalse(boxAndCardService.deleteCard(67,"loan"));
+        loanCards = loanCardDao.findAll();
+        assertEquals(loanCards.size(), 1);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteCollectionCard(){
+        List<CollectionCard> collectionCards = collectionCardDao.findAll();
+        assertEquals(collectionCards.size(), 1);
+        assertTrue(boxAndCardService.deleteCard(66,"collection"));
+        collectionCards = collectionCardDao.findAll();
+        assertEquals(collectionCards.size(), 0);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteCollectionCard_NotFound(){
+        List<CollectionCard> collectionCards = collectionCardDao.findAll();
+        assertEquals(collectionCards.size(), 1);
+        assertFalse(boxAndCardService.deleteCard(67,"collection"));
+        collectionCards = collectionCardDao.findAll();
+        assertEquals(collectionCards.size(), 1);
     }
 
 }

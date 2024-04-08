@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -135,5 +136,53 @@ public class OrganizerControllerIntegrationTest {
         assertNotNull(modelAndView);
         ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
         assertEquals(collectionCardDao.findAll().size(), 1);
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteDeckCardHttpRequest() throws Exception {
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertTrue(deckCardDao.findById(66).isPresent());
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","deck",66)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId","2")
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertFalse(deckCardDao.findById(66).isPresent());
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteLoanCardHttpRequest() throws Exception {
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertTrue(loanCardDao.findById(66).isPresent());
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","loan",66)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId","2")
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertFalse(loanCardDao.findById(66).isPresent());
+    }
+    @Test
+    @Sql("/sql/deleteCard.sql")
+    public void deleteCollectionCardHttpRequest() throws Exception {
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertTrue(collectionCardDao.findById(66).isPresent());
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/deleteCard/{type}/{id}","collection",66)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("boxId","2")
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView,"cardBox");
+        assertTrue(cardBoxDao.findById(2).isPresent());
+        assertFalse(collectionCardDao.findById(66).isPresent());
     }
 }

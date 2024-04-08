@@ -48,3 +48,16 @@ $(document).ready(function (){
         $('.dropdown-menu').hide();
     });
 })
+function deleteCard(id, type, boxId) {
+    // this.window.location = "/deleteCardBox/"+id
+    $.ajax({
+        url: '/deleteCard/'+type+'/'+id,
+        data:{
+            boxId:boxId,
+        },
+        method: 'GET',
+        success: function() {
+            location.reload();
+        },
+    })
+}
