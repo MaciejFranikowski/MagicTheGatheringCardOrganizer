@@ -226,4 +226,25 @@ public class OrganizerControllerTest {
         ModelAndViewAssert.assertViewName(modelAndView, "cardBox");
         ModelAndViewAssert.assertModelAttributeValue(modelAndView,"cardBox", cardBox);
     }
+    @Test
+    public void searchNamedCardHttpRequest_Successful() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/card/{name}","Force of will")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "card");
+        ModelAndViewAssert.assertModelAttributeAvailable(modelAndView, "card");
+    }
+    @Test
+    public void searchNamedCardHttpRequest_NotFound() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/card/{name}","asbsdf")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk()).andReturn();
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        assertNotNull(modelAndView);
+        ModelAndViewAssert.assertViewName(modelAndView, "error");
+    }
 }

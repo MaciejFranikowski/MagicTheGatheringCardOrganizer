@@ -47,6 +47,11 @@ $(document).ready(function (){
         $input.val(selectedValue);
         $('.dropdown-menu').hide();
     });
+
+    $('.card-info').on('click', function (){
+        var cardName = $(this).find("td:first").text();
+        window.location = "/card/"+cardName
+    });
 })
 function deleteCard(id, type, boxId) {
     $.ajax({

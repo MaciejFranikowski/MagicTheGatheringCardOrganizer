@@ -1,7 +1,9 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer.controller;
 
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.api.ApiCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.models.CardBox;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.BoxAndCardService;
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.ScryFallApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class OrganizerController {
     private final BoxAndCardService boxAndCardService;
+    private final ScryFallApiService scryFallApiService;
 
-    public OrganizerController(@Autowired BoxAndCardService boxAndCardService) {
+    public OrganizerController(
+            @Autowired BoxAndCardService boxAndCardService,
+            @Autowired ScryFallApiService scryFallApiService
+    ) {
         this.boxAndCardService = boxAndCardService;
+        this.scryFallApiService = scryFallApiService;
     }
 
     @GetMapping("/")
@@ -90,5 +97,13 @@ public class OrganizerController {
         boxAndCardService.deleteCard(id, type);
         m.addAttribute("cardBox", boxAndCardService.getCardBoxInformation(boxId));
         return "cardBox";
+    }
+    @GetMapping("/card/{name}")
+    public String deleteCard(@PathVariable String name, Model m){
+        ApiCard card = scryFallApiService.searchNamedCard(name);
+        if(card == null)
+            return "error";
+        m.addAttribute("card",card);
+        return "card";
     }
 }

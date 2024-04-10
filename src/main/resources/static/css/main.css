@@ -27,3 +27,26 @@ h1, h2, h3, h4, h5, h6 {
 .form-control-margin{
     margin-bottom: 10px;
 }
+dd {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #FFF;
+    text-transform: uppercase;
+    padding: 4px 0 4px 0;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    width: 68px;
+    text-align: center;
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
+    order: 1;
+}
+.legal {
+    background-color: #75986E;
+}
+.not-legal {
+    background-color: #AEAEAE;
+}
+.banned {
+    background-color: #ac3a3a;
+}

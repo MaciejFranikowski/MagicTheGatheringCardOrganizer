@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MTG CO</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark main-color fixed-top">
+    <a class="navbar-brand" href="/">MTGO</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="history.back()">Back to box </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid-margins container-fluid">
+    <div class="row">
+        <div class="col">
+            <img class="mx-auto d-block" th:src="@{${card.imageUris.normal}}" alt="nic"/>
+        </div>
+        <div class="col">
+            <div th:object="${card}">
+                <h2 th:text="*{name}"></h2>
+                <hr>
+                <h3 th:text="*{type}"></h3>
+                <hr>
+                <h4 th:text="*{oracleText}"></h4>
+                <br><br>
+                <h5 class="font-italic" th:text="*{flavorText}"></h5>
+                <hr>
+                <h5 th:text="'Illustrated by ' + *{artist}"></h5>
+                <br>
+                <table class="table ">
+                    <tbody>
+                    <tr th:each="rowNumber: ${#numbers.sequence(1, 7)}">
+                        <td th:each="columnNumber: ${#numbers.sequence(1, 2)}">
+                            <!-- Calculate index for the current cell -->
+                            <th:block th:with="index=(${rowNumber - 1}) * 2 + ${columnNumber - 1}">
+                                <!-- Check if the index is within the legalities size -->
+                                <th:block th:if="${index < card.legalities.size()}">
+                                    <!-- Get the key and value at the current index -->
+                                    <th:block th:with="entry=${card.legalities.entrySet().toArray()[index]}">
+                                        <!-- Display the key and value in the cell -->
+                                        <th:block th:if="${entry.value == 'legal'}">
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <dd th:text="${entry.value}" class="legal"></dd>
+                                                </div>
+                                                <div class="col">
+                                                    <dt th:text="${entry.key}"></dt>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${entry.value == 'not_legal'}">
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <dd th:text="${entry.value}" class="not-legal"></dd>
+                                                </div>
+                                                <div class="col">
+                                                    <dt th:text="${entry.key}"></dt>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${entry.value == 'banned'}">
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <dd th:text="${entry.value}" class="banned"></dd>
+                                                </div>
+                                                <div class="col">
+                                                    <dt th:text="${entry.key}"></dt>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+<!--        <div class="col-sm">-->
+<!--            <h3>Loan cards</h3>-->
+<!--            <form class="mb-2" method="POST" th:action="@{/create/card/loan}">-->
+<!--                <div class="form-row">-->
+<!--                    <div class="form-group col-md-12">-->
+<!--                        <div class="position-relative">-->
+<!--                            <input class="form-control card-search" data-dropdown="Loan" name="name" id="loanCardName"-->
+<!--                                   placeholder="Enter a card name" required>-->
+<!--                            <div id="dropdownMenuLoan" class="dropdown-menu" style="width: 100%; display: none;"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="form-row">-->
+<!--                    <div class="form-group col-md-6">-->
+<!--                        <input class="form-control" name="ownerFirstName" id="ownerFirstName" placeholder="Owner first name" required>-->
+<!--                    </div>-->
+<!--                    <div class="form-group col-md-6">-->
+<!--                        <input class="form-control" name="ownerLastName" id="ownerLastName" placeholder="Owner last name" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="form-row">-->
+<!--                    <input type="hidden" name="boxId" th:value="${cardBox.id}" />-->
+<!--                    <button type="submit" class="btn btn-primary" style="margin-left: 5px">Add card</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--            <hr>-->
+<!--            <input class="form-control form-control-margin table-search" id="loanTableSearch" data-tr-name="loan"-->
+<!--                   type="text" placeholder="Search..">-->
+<!--            <table class="table table-striped table-hover text-center">-->
+<!--                <thead class="thead-dark">-->
+<!--                <tr>-->
+<!--                    <th scope="col">Card name</th>-->
+<!--                    <th scope="col">Owner name</th>-->
+<!--                    <th scope="col"></th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="loanTable">-->
+<!--                <tr th:each="card: ${cardBox.loanCards}">-->
+<!--                    <td th:text="${card.name}"></td>-->
+<!--                    <td th:text="${card.ownerFirstName} + ' ' + ${card.ownerLastName}"></td>-->
+<!--                    <td>-->
+<!--                        <button type="button" class="btn btn-outline-danger"-->
+<!--                                th:onclick="|deleteCard('${card.id}', 'loan', '${cardBox.id}')|">Delete-->
+<!--                        </button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/cardBox.js}"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer;
 
+import com.maciejfranikowski.magicTheGatheringCardOrganizer.api.ApiCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.api.AutoCompleteCards;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.service.ScryFallApiService;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -55,5 +55,34 @@ public class ScryFallApiServiceTest {
         when(mockRestTemplate.getForObject(anyString(), any())).thenThrow(RestClientException.class);
         List<String> result = scryFallApiService.searchAutoCompleteCardNames("query");
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testSearchNamedCard_Success(){
+        ApiCard card = new ApiCard();
+        card.setName("Force of will");
+        when(mockRestTemplate.getForObject(anyString(), any())).thenReturn(card);
+        ApiCard foundCard = scryFallApiService.searchNamedCard("Force of will");
+        assertEquals(card.getName(), foundCard.getName());
+    }
+    @Test
+    public void testSearchNamedCard_HttpClientError() {
+        when(mockRestTemplate.getForObject(anyString(), any())).thenThrow(HttpClientErrorException.class);
+        ApiCard foundCard = scryFallApiService.searchNamedCard("Force of will");
+        assertNull(foundCard);
+    }
+
+    @Test
+    public void testSearchNamedCard_HttpServerError() {
+        when(mockRestTemplate.getForObject(anyString(), any())).thenThrow(HttpServerErrorException.class);
+        ApiCard foundCard = scryFallApiService.searchNamedCard("Force of will");
+        assertNull(foundCard);
+    }
+
+    @Test
+    public void testSearchNamedCard_RestClientException() {
+        when(mockRestTemplate.getForObject(anyString(), any())).thenThrow(RestClientException.class);
+        ApiCard foundCard = scryFallApiService.searchNamedCard("Force of will");
+        assertNull(foundCard);
     }
 }
