@@ -52,6 +52,10 @@ $(document).ready(function (){
         var cardName = $(this).find("td:first").text();
         window.location = "/card/"+cardName
     });
+
+    $('.delete-card-button').on('click', function (event){
+        event.stopPropagation();
+    });
 })
 function deleteCard(id, type, boxId) {
     $.ajax({
