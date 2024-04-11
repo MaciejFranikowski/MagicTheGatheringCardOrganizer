@@ -3,6 +3,7 @@ package com.maciejfranikowski.magicTheGatheringCardOrganizer.service;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.api.ApiCard;
 import com.maciejfranikowski.magicTheGatheringCardOrganizer.api.AutoCompleteCards;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -23,8 +24,9 @@ public class ScryFallApiService {
        this.logger = Logger.getLogger(getClass().getName());
        this.restTemplate = restTemplate;
     }
-
+    @Cacheable("autocompleteCards")
     public List<String> searchAutoCompleteCardNames(String query) {
+        logger.info("Searching autocomplete cards for " + query);
         try {
             AutoCompleteCards cards = this.restTemplate.getForObject(
                     SCRYFALL_API_AUTOCOMPLETE_URL + query,
@@ -41,7 +43,9 @@ public class ScryFallApiService {
             return Collections.emptyList();
         }
     }
+    @Cacheable("namedCards")
     public ApiCard searchNamedCard(String query) {
+        logger.info("Searching named card for " + query);
         try {
             return this.restTemplate.getForObject(
                     SCRYFALL_API_SEARCH_NAMED_URL + query,
