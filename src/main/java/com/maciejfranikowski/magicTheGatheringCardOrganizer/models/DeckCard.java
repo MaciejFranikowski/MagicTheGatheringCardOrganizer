@@ -1,9 +1,14 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity()
 @Table(name = "deck_card")
+@Getter @Setter @NoArgsConstructor @ToString
 public class DeckCard implements Card{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,56 +20,11 @@ public class DeckCard implements Card{
     private String name;
     @Column(name = "deck_name")
     private String deckName;
-    public DeckCard(){}
+
     public DeckCard(CardBox box, String name, String deckName){
         this.box = box;
         this.name = name;
         this.deckName = deckName;
     }
-    @Override
-    public int getId() {
-        return id;
-    }
 
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public CardBox getBox() {
-        return box;
-    }
-
-    @Override
-    public void setBox(CardBox box) {
-        this.box = box;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDeckName() {
-        return deckName;
-    }
-
-    public void setDeckName(String deckName) {
-        this.deckName = deckName;
-    }
-
-    @Override
-    public String toString() {
-        return "DeckCard{" +
-                "id=" + id +
-                ", box=" + box +
-                ", name='" + name + '\'' +
-                ", deckName='" + deckName + '\'' +
-                '}';
-    }
 }

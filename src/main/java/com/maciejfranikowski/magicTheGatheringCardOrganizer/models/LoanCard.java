@@ -1,9 +1,14 @@
 package com.maciejfranikowski.magicTheGatheringCardOrganizer.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "loan_card")
+@Getter @Setter @NoArgsConstructor @ToString
 public class LoanCard implements Card{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,66 +22,11 @@ public class LoanCard implements Card{
     private String ownerFirstName;
     @Column(name = "owner_lastname")
     private String ownerLastName;
-    public LoanCard(){}
+
     public LoanCard(CardBox box, String name, String ownerFirstName, String ownerLastName){
         this.box = box;
         this.name = name;
         this.ownerFirstName = ownerFirstName;
         this.ownerLastName = ownerLastName;
-    }
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public CardBox getBox() {
-        return box;
-    }
-
-    @Override
-    public void setBox(CardBox box) {
-        this.box = box;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOwnerFirstName() {
-        return ownerFirstName;
-    }
-
-    public void setOwnerFirstName(String ownerFirstName) {
-        this.ownerFirstName = ownerFirstName;
-    }
-
-    public String getOwnerLastName() {
-        return ownerLastName;
-    }
-
-    public void setOwnerLastName(String ownerLastName) {
-        this.ownerLastName = ownerLastName;
-    }
-
-    @Override
-    public String toString() {
-        return "LoanCard{" +
-                "id=" + id +
-                ", box=" + box +
-                ", name='" + name + '\'' +
-                ", ownerFirstName='" + ownerFirstName + '\'' +
-                ", ownerLastName='" + ownerLastName + '\'' +
-                '}';
     }
 }
