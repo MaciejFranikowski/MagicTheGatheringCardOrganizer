@@ -50,7 +50,6 @@
             <th  scope="col">Name</th>
             <th scope="col">Location</th>
             <th scope="col">Color</th>
-            <th scope="col">No. of cards</th>
             <th ></th>
         </tr>
         </thead>
@@ -59,8 +58,7 @@
             <td style="" th:text="${box.name}" th:onclick="|createCardBox('${box.id}');|"></td>
             <td th:text="${box.location}" th:onclick="|createCardBox('${box.id}');|"></td>
             <td th:text="${box.color}" th:onclick="|createCardBox('${box.id}');|">@mdo</td>
-            <td th:text="${box.loanCards.size() + box.collectionCards.size() + box.deckCards.size()}"
-                th:onclick="|createCardBox('${box.id}');|"></td>
+
             <td><button type="button" class="btn btn-outline-danger" th:onclick="|deleteCardBox('${box.id}')|">Delete</button></td>
         </tr>
         </tbody>

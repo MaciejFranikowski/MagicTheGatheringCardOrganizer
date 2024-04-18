@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mtg-organizer-db:
+    image: 'mysql'
+    ports:
+      - "3306:3306"
+    container_name: mtg-organizer-db
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: test
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+        DATABASE_HOST: 192.168.0.164
+    volumes:
+      - "./src/main/resources/sql/init:/docker-entrypoint-initdb.d/"
+  app:
+    image: 'mtg-organizer:latest'
+    build:
+      context: .
+    container_name: mtg-organizer
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.profiles.active" : "prod"
+       }'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mtg-organizer-db:3306/card_organizer
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: test
+    ports:
+      - "1500:1500"
+    depends_on:
+      - mtg-organizer-db
