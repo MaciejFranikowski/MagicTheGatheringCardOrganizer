@@ -63,7 +63,8 @@ function deleteCard(id, type, boxId) {
         data:{
             boxId:boxId,
         },
-        method: 'GET'
+        method: 'GET',
+        async:false,
     });
     this.window.location="/cardBox/"+boxId;
 }
